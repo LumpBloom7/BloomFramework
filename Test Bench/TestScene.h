@@ -16,7 +16,7 @@ class TestScene : public bloom::Scene {
 public:
 	using bloom::Scene::Scene;
 
-	void load() override {
+	void load() {
 		namespace fs = std::filesystem;
 		fs::path workingDir = fs::path(getExePath());
 		fs::path assetsDir = L"data\\Assets";
