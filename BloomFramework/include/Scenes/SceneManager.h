@@ -21,8 +21,6 @@ namespace bloom {
 		void update(double deltaTime);
 		void draw();
 
-		const SceneManager * thisPtr = this;
-
 	private:
 		std::shared_ptr<Scene> m_currScene;
 		Game & m_gameInstance;
