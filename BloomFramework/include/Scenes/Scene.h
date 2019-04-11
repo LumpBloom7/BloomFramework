@@ -19,11 +19,12 @@ namespace bloom {
 		Scene(SceneManager & sceneManager);
 		~Scene();
 
-		void update(double deltaTime);
+		virtual void update(double deltaTime);
 		void draw();
 		void start();
 		void restart();
 		virtual void load() = 0;
+		void createRenderLayer(int amount = 1);
 
 		Game & getGameInstance() { return m_gameInstance; }
 
@@ -62,7 +63,8 @@ namespace bloom {
 		entt::DefaultRegistry m_registry;
 		std::vector<std::shared_ptr<System>> m_systems;
 		std::unordered_map<std::string, std::unique_ptr<GameObject>> m_gameObjects;
-		SDL_Texture * m_sceneTexture;
+
+		std::vector<SDL_Texture*> m_renderLayers;
 
 		double m_sceneRotateAngle = 0.0;
 		SDL_Point m_sceneRotateCenter;

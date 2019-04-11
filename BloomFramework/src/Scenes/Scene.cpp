@@ -8,19 +8,16 @@ namespace bloom {
 		m_gameInstance(sceneManager.m_gameInstance),
 		m_sceneRotateCenter(Coord().toSDLPoint(m_gameInstance.getRenderer()))
 	{
-		m_sceneTexture = SDL_CreateTexture(m_gameInstance.getRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,
-			m_gameInstance.getScreenWidth(),
-			m_gameInstance.getScreenHeight());
-		
-		SDL_SetTextureBlendMode(m_sceneTexture, SDL_BLENDMODE_BLEND);
+		createRenderLayer();
 	}
 
 	Scene::~Scene() {
-		SDL_DestroyTexture(m_sceneTexture);
+		for(auto renderLayer : m_renderLayers)
+		SDL_DestroyTexture(renderLayer);
 	}
 
 	void Scene::update(double deltaTime) {
-		SDL_SetRenderTarget(m_gameInstance.getRenderer(), m_sceneTexture);
+		SDL_SetRenderTarget(m_gameInstance.getRenderer(), m_renderLayers[0]); // Render everything on the first layer by default
 		SDL_SetRenderDrawColor(m_gameInstance.getRenderer(), 0, 0, 0, 0);
 		SDL_RenderClear(m_gameInstance.getRenderer());
 		for (auto & sys : m_systems)
@@ -30,7 +27,8 @@ namespace bloom {
 	}
 
 	void Scene::draw() {
-		SDL_RenderCopyEx(m_gameInstance.getRenderer(), m_sceneTexture, nullptr, nullptr, m_sceneRotateAngle, &m_sceneRotateCenter, SDL_FLIP_NONE);
+		for(auto renderLayer : m_renderLayers)
+			SDL_RenderCopyEx(m_gameInstance.getRenderer(), renderLayer, nullptr, nullptr, m_sceneRotateAngle, &m_sceneRotateCenter, SDL_FLIP_NONE);
 	}
 
 	void Scene::start() {
@@ -43,6 +41,17 @@ namespace bloom {
 		destroyAllGameObjects();
 		load();
 		m_sceneLoaded = true;
+	}
+
+	void Scene::createRenderLayer(int amount) {
+		for (int i = 0; i < amount; ++i) {
+			SDL_Texture* renderLayer = SDL_CreateTexture(m_gameInstance.getRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,
+				m_gameInstance.getScreenWidth(),
+				m_gameInstance.getScreenHeight());
+
+			SDL_SetTextureBlendMode(renderLayer, SDL_BLENDMODE_BLEND);
+			m_renderLayers.emplace_back(renderLayer);
+		}
 	}
 
 	void Scene::destroyGameObject(const std::string & tag) {
