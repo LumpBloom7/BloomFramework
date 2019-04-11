@@ -7,6 +7,10 @@ class SceneRotateSystem : public bloom::systems::DefaultSystem {
 	using bloom::systems::DefaultSystem::System;
 
 public:
+	SceneRotateSystem(bloom::Scene& sceneObject, bloom::RenderLayer& renderLayer) :
+		bloom::systems::DefaultSystem::System(sceneObject),
+		m_renderLayer(renderLayer) {}
+
 	~SceneRotateSystem() = default;
 
 	void update(std::optional<double> deltaTime = std::nullopt) override {
@@ -17,7 +21,7 @@ public:
 				m_currentAngle = 0.0;
 				parentScene.getSystemPtr<RandomPositionSystem>()->enabled = true;
 			}
-			parentScene.setSceneRotation(m_currentAngle);
+			m_renderLayer.setLayerRotation(m_currentAngle);
 		}
 	}
 
@@ -27,4 +31,5 @@ public:
 
 private:
 	double m_currentAngle = 0.0;
+	bloom::RenderLayer& m_renderLayer;
 };

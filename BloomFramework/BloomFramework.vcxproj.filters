@@ -108,6 +108,9 @@
     <ClCompile Include="src\Scenes\SceneManager.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="src\Scenes\RenderLayer.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Framework.h">
@@ -238,6 +241,9 @@
     </ClInclude>
     <ClInclude Include="include\StdStableSort.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Scenes\RenderLayer.h">
+      <Filter>Header Files\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

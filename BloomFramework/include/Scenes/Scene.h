@@ -6,6 +6,7 @@
 #include "Exception.h"
 #include "Components/LayerGroup.h"
 #include "StdStableSort.h"
+#include "RenderLayer.h"
 
 namespace bloom {
 	class BLOOMFRAMEWORK_API SceneManager;
@@ -17,7 +18,6 @@ namespace bloom {
 
 	public:
 		Scene(SceneManager & sceneManager);
-		~Scene();
 
 		virtual void update(double deltaTime);
 		void draw();
@@ -37,8 +37,8 @@ namespace bloom {
 		void destroyAllGameObjects();
 
 		// System stuff
-		template<typename S, typename = std::enable_if_t<std::is_base_of_v<System, S>>>
-		std::shared_ptr<S> registerSystem();
+		template<typename S,typename... TArgs, typename = std::enable_if_t<std::is_base_of_v<System, S>>>
+		std::shared_ptr<S> registerSystem(TArgs&& ... initArgs);
 
 		template<typename S, typename = std::enable_if_t<std::is_base_of_v<System, S>>>
 		void unregisterSystem();
@@ -47,13 +47,6 @@ namespace bloom {
 		
 		template<typename S, typename = std::enable_if_t<std::is_base_of_v<System, S>>>
 		std::shared_ptr<S> getSystemPtr();
-
-		// Rotation stuff
-		void setSceneRotation(double angle);
-		void adjustSceneRotation(double adjustment);
-		double getSceneRotation();
-		void setSceneRotationCenter(Coord center);
-		void setSceneRotationCenter(SDL_Point center);
 
 		bool isLoaded() { return m_sceneLoaded; }
 
@@ -64,10 +57,7 @@ namespace bloom {
 		std::vector<std::shared_ptr<System>> m_systems;
 		std::unordered_map<std::string, std::unique_ptr<GameObject>> m_gameObjects;
 
-		std::vector<SDL_Texture*> m_renderLayers;
-
-		double m_sceneRotateAngle = 0.0;
-		SDL_Point m_sceneRotateCenter;
+		std::vector<RenderLayer> m_renderLayers;
 
 		bool m_sceneLoaded = false;
 	};
@@ -88,14 +78,14 @@ namespace bloom {
 	}
 
 	// System stuff
-	template<typename S, typename>
-	std::shared_ptr<S> Scene::registerSystem() {
+	template<typename S,typename... TArgs, typename>
+	std::shared_ptr<S> Scene::registerSystem(TArgs&& ... initArgs) {
 		//static_assert (std::is_base_of_v<System, S>, "Type S passed in is not System based");
 		if (auto v = std::find_if(m_systems.begin(), m_systems.end(),
 			[](auto & i) -> bool { return typeid(*i) == typeid(S); });
 			v == m_systems.end())
 		{
-			return std::dynamic_pointer_cast<S>(m_systems.emplace_back(std::make_shared<S>(*this)));
+			return std::dynamic_pointer_cast<S>(m_systems.emplace_back(std::make_shared<S>(*this, std::forward<TArgs>(initArgs)...)));
 		}
 		else {
 			std::clog << "This system is already registered." << std::endl;

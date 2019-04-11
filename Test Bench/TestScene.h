@@ -44,7 +44,7 @@ public:
 
 		registerSystem<RandomPositionSystem>()->enabled = false; // Still wonky because of Coord change. We also don't want to start it immediately.
 		registerSystem<RenderSystem>();
-		registerSystem<SceneRotateSystem>(); // Do barrel rolls!!!
+		registerSystem<SceneRotateSystem>(m_renderLayers[0]); // Do barrel rolls!!!
 		registerSystem<SpriteRotatorSystem>();
 		registerSystem<AnimationChangerSystem>();
 		registerSystem<AnimationSystem>();

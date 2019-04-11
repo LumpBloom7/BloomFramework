@@ -13,3 +13,4 @@
 #include "Graphics/FontStore.h"
 #include "Graphics/SpriteText.h"
 #include "Coord.h"
+#include "Scenes/RenderLayer.h"
