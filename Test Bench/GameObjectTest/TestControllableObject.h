@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Framework.h"
-#include "NoRandomComponent.h"
 
 class TestMovableObject : public bloom::GameObject {
 	using Position = bloom::components::Position;
@@ -14,10 +13,9 @@ public:
 
 	void init(SDL_Rect pos_and_size = SDL_Rect{ 0,0, 50, 50 }, const std::filesystem::path texturePath = "Assets/Box.png", std::optional<SDL_Rect> srcRect = std::nullopt) {
 		pos = &m_registry.replace<Position>(m_entity, pos_and_size.x, pos_and_size.y);
-		m_registry.assign<Size>(m_entity, pos_and_size.w, pos_and_size.h);
-		auto tmp = m_gameInstance->textures.load(texturePath);
+		m_registry.replace<Size>(m_entity, pos_and_size.w, pos_and_size.h);
+		auto tmp = c_gameInstance->textures.load(texturePath);
 		m_registry.assign<Sprite>(m_entity, tmp, srcRect);
-		m_registry.assign<NoRandomPos>(m_entity);
 	}
 
 	void updatePos(int xOffset, int yOffset) {

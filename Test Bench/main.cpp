@@ -60,10 +60,9 @@ void test_drawer(const std::filesystem::path& dataDir) {
 	const int framedelay = 1000 / 60;
 
 	Uint32 framestart;
-
-	game = new Game(WINDOW_WIDTH, WINDOW_HEIGHT);
+	game = new Game({ WINDOW_WIDTH, WINDOW_HEIGHT });
 	try {
-		game->create("Bloom Test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+		game->create("Bloom Test", { SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED });
 	}
 	catch (Exception & e) {
 		std::cerr << e.what() << std::endl;
@@ -95,7 +94,7 @@ void test_drawer(const std::filesystem::path& dataDir) {
 	constexpr size_t UI_font = 0;
 	fonts.load(fontPath, UI_font);
 
-	auto renderer = game->getRenderer();
+	auto renderer = game->_getRenderer();
 	// Test SpriteText(NFont)
 	bloom::graphics::SpriteText testText(renderer, fonts[UI_font], "Hello, World!");
 	{
@@ -126,19 +125,20 @@ void test_drawer(const std::filesystem::path& dataDir) {
 	TestChar cursor = TestChar(testRegistry, game);
 	TestChar testSprite = TestChar(testRegistry, game);
 	testSprite.init(SDL_Rect{ 0, 0, 128, 128 }, spriteSheetPath, SDL_Rect{ 0,0,32,32 });
+	testSprite.enableRandomPos();
 	renderSysTest.update();
 	game->render();
 	TestChar testSprite2 = TestChar(testRegistry, game);
 	testSprite2.init(SDL_Rect{ 128, 0, 128, 128 }, testCharPath, SDL_Rect{ 0, 0, 32, 32 });
+	testSprite2.enableRandomPos();
 	renderSysTest.update();
 	game->render();
 	TestChar testGO = TestChar(testRegistry, game);
 	testGO.init(SDL_Rect{ 50, 50, 192, 192 }, testCharPath, SDL_Rect{ 64, 96, 32, 32 });
-	testGO.disableRandomPos();
 	renderSysTest.update();
 	game->render();
 
-	// Randomizes position of entities(excluding those with `NoRandomPos` Component.
+	// Randomizes position of entities (which has `RandomPos` component)
 	RandomPositionSystem randomizer(testRegistry);
 
 	cursor.init(SDL_Rect{ 0,0,39,55 }, testCursorPath);
@@ -196,7 +196,6 @@ void test_drawer(const std::filesystem::path& dataDir) {
 
 		testMovable.updatePos(xOffset, yOffset);
 
-
 		if (testGOpos.x >= WINDOW_WIDTH) {
 			testGOpos.x = -testGOsize.w; testX = rstep(10); testY = rstep(10);
 		}
@@ -251,6 +250,7 @@ int main(int argc, char* argv[]) {
 	sounds[1]->play();
 	std::this_thread::sleep_for(3s);
 	sounds.clear();
+	delete game;
 
 	return 0;
 }
