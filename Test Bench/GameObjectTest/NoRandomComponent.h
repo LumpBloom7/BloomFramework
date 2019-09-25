@@ -1,3 +1,6 @@
 #pragma once
 
-struct NoRandomPos {};
+struct RandomPosition {
+	int maxX, maxY;
+
+};

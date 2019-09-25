@@ -2,27 +2,22 @@
 
 #include "stdIncludes.h"
 #include "Components/Components.h"
-#include "DefaultSystem.h"
 
 namespace bloom::systems {
-	class AnimationSystem : public System {
+	void animationSystem(entt::DefaultRegistry& registry, double deltaTime = 0.0) {
 		using AnimationPtr = bloom::components::AnimationPtr;
 		using AnimationSet = bloom::components::AnimationSet;
 		using Sprite = bloom::components::Sprite;
-		using System::DefaultSystem;
 
-	public:
-		void update(std::optional<double> deltaTime = 0.0) override {
-			m_registry.view<AnimationPtr>().each(
-				[&](auto entity, AnimationPtr& anim) {
-					if (m_registry.has<AnimationSet>(entity)) {
-						AnimationPtr newAnim = m_registry.get<AnimationSet>(entity).getCurrent();
-						if (newAnim)
-							anim = newAnim;
-					}
-					m_registry.replace<Sprite>(entity, anim->update(deltaTime.value()));
+		registry.view<AnimationPtr>().each(
+			[&](auto entity, AnimationPtr& anim) {
+				if (registry.has<AnimationSet>(entity)) {
+					AnimationPtr newAnim = registry.get<AnimationSet>(entity).getCurrent();
+					if (newAnim)
+						anim = newAnim;
 				}
-			);
-		}
-	};
+				registry.replace<Sprite>(entity, anim->update(deltaTime));
+			}
+		);
+	}
 }

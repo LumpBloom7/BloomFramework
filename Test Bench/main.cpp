@@ -116,57 +116,48 @@ void test_drawer(const std::filesystem::path& dataDir) {
 
 	// Test Game Object
 	entt::DefaultRegistry testRegistry;
-	AnimationChangerSystem animChangerTest(testRegistry);
-	bloom::systems::AnimationSystem animSysTest(testRegistry);
-	bloom::systems::RenderSystem renderSysTest(testRegistry);
 	//game->textures.load(spriteSheetPath, SDL_Color{ 64, 176, 104, 113 });
 	//game->textures.load(testCharPath, SDL_Color{ 144,168,0,0 });
-	TestChar testSprite = TestChar(testRegistry, game);
-	testSprite.init(SDL_Rect{ 0, 0, 128, 128 }, spriteSheetPath, SDL_Rect{ 0,0,32,32 });
-	renderSysTest.update();
+	spawnTestChar(testRegistry, game, SDL_Rect{ 0, 0, 128, 128 }, spriteSheetPath, SDL_Rect{ 0,0,32,32 }, true);
+	bloom::systems::renderSystem(testRegistry);
 	game->render();
-	TestChar testSprite2 = TestChar(testRegistry, game);
-	testSprite2.init(SDL_Rect{ 128, 0, 128, 128 }, testCharPath, SDL_Rect{ 0, 0, 32, 32 });
-	renderSysTest.update();
+	spawnTestChar(testRegistry, game, SDL_Rect{ 128, 0, 128, 128 }, testCharPath, SDL_Rect{ 0, 0, 32, 32 }, true);
+	bloom::systems::renderSystem(testRegistry);
 	game->render();
-	TestChar testGO = TestChar(testRegistry, game);
-	testGO.init(SDL_Rect{ 50, 50, 192, 192 }, testCharPath, SDL_Rect{ 64, 96, 32, 32 });
-	testGO.disableRandomPos();
-	renderSysTest.update();
+	spawnTestChar(testRegistry, game, SDL_Rect{ 50, 50, 192, 192 }, testCharPath, SDL_Rect{ 64, 96, 32, 32 });
+	bloom::systems::renderSystem(testRegistry);
 	game->render();
 
 	// Randomizes position of entities(excluding those with `NoRandomPos` Component.
-	RandomPositionSystem randomizer(testRegistry);
-	TestAnimChar testAnim(testRegistry, game);
-	testAnim.init(testCharPath);
+	spawnAnimatedTestChar(testRegistry, game, testCharPath);
 
 	// Test SpriteText2
 	std::string deltaTimeText{ "fps: " };
-	
-	// If manual control of entities is required, this is the method to do so.
-	auto & testGOpos = testRegistry.get<Position>(testGO.getEntityID());
 
-	auto & testGOsize = testRegistry.get<Size>(testGO.getEntityID());
-	int testX = rstep(10), testY = rstep(10);
+	// If manual control of entities is required, this is the method to do so.
+	/*auto& testGOpos = testRegistry.get<Position>(testGO.getEntityID());
+
+	auto& testGOsize = testRegistry.get<Size>(testGO.getEntityID());
+	int testX = rstep(10), testY = rstep(10);*/
 
 	while (game->isRunning()) {
-		testGOpos.x += testX;
+		/*testGOpos.x += testX;
 		testGOpos.y += testY;
 		if (testGOpos.x >= WINDOW_WIDTH) {
 			testGOpos.x = -testGOsize.w; testX = rstep(10); testY = rstep(10);
 		}
 		if (testGOpos.y >= WINDOW_HEIGHT) {
 			testGOpos.y = -testGOsize.h; testX = rstep(10); testY = rstep(10);
-		}
+		}*/
 		// Demo ends here.
 		framestart = SDL_GetTicks();
 		auto dt = game->timer.lap();
 		game->handleEvents();
 		game->clear();
-		animChangerTest.update();
-		animSysTest.update(dt);
-		randomizer.update(WINDOW_WIDTH - 128, WINDOW_HEIGHT - 128);
-		renderSysTest.update(); // Test again.
+		animationChangerSystem(testRegistry);
+		bloom::systems::animationSystem(testRegistry, dt);
+		positionRandomizerSystem(testRegistry, dt);
+		bloom::systems::renderSystem(testRegistry);
 		auto fps = 1000.0 / dt;
 		deltaTimeText.erase(5);
 		deltaTimeText += std::to_string(fps);
