@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Framework.h"
-#include "NoRandomComponent.h"
+#include "Components/RandomPosition.h"
 
 void spawnTestChar(
 	entt::DefaultRegistry& registry,

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Framework.h"
-#include "NoRandomComponent.h"
+#include "Components/RandomPosition.h"
 
 void spawnAnimatedTestChar(entt::DefaultRegistry& registry, bloom::Game* gameInstance, const std::filesystem::path texturePath = "Assets/TestChar.png") {
 	using Position = bloom::components::Position;

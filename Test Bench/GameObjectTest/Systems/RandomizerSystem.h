@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Framework.h"
-#include "NoRandomComponent.h"
+#include "../Components/RandomPosition.h"
 
 void positionRandomizerSystem(entt::DefaultRegistry& registry, double deltaTime = 0.0) {
 	using Position = bloom::components::Position;

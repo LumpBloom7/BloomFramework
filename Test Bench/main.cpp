@@ -6,9 +6,9 @@
 #include <chrono>
 
 #include "GameObjectTest/TestGameObject.h"
-#include "GameObjectTest/RandomizerSystem.h"
+#include "GameObjectTest/Systems/RandomizerSystem.h"
 #include "GameObjectTest/TestAnimatedGameObject.h"
-#include "GameObjectTest/AnimationChangerSystem.h"
+#include "GameObjectTest/Systems/AnimationChangerSystem.h"
 #include "getExePath.h"
 
 using namespace bloom;

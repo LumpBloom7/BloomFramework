@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\GameObjectStuff">
+      <UniqueIdentifier>{a0cdbe87-5e59-49a2-8d1b-e55b3b9e9339}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameObjectStuff\Systems">
+      <UniqueIdentifier>{753ff79d-26f8-44d4-b8c0-deaf7e10615e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameObjectStuff\Components">
+      <UniqueIdentifier>{4556fd6f-219c-4205-b8c1-4e258e8386cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -34,23 +43,23 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameObjectTest\TestGameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjectTest\RandomizerSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjectTest\NoRandomComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="getExePath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjectTest\TestAnimatedGameObject.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="GameObjectTest\Systems\RandomizerSystem.h">
+      <Filter>Header Files\GameObjectStuff\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjectTest\AnimationChangerSystem.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="GameObjectTest\Systems\AnimationChangerSystem.h">
+      <Filter>Header Files\GameObjectStuff\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectTest\Components\RandomPosition.h">
+      <Filter>Header Files\GameObjectStuff\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectTest\TestAnimatedGameObject.h">
+      <Filter>Header Files\GameObjectStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectTest\TestGameObject.h">
+      <Filter>Header Files\GameObjectStuff</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
