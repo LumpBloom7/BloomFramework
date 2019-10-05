@@ -60,9 +60,9 @@ void test_drawer(const std::filesystem::path& dataDir) {
 
 	Uint32 framestart;
 
-	game = new Game(WINDOW_WIDTH, WINDOW_HEIGHT);
+	game = new Game(SDL_WINDOW_RESIZABLE);
 	try {
-		game->create("Bloom Test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+		game->create("Bloom Test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 	catch (Exception & e) {
 		std::cerr << e.what() << std::endl;
@@ -74,6 +74,7 @@ void test_drawer(const std::filesystem::path& dataDir) {
 	game->setColor(randColor);
 	game->clear();
 	game->render();
+	game->setLogicalRendererSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
 	fs::path assetsPath = dataDir / L"Assets";
 	fs::path fontsPath = dataDir / L"Fonts";
@@ -142,7 +143,7 @@ void test_drawer(const std::filesystem::path& dataDir) {
 
 	// Test SpriteText2
 	std::string deltaTimeText{ "fps: " };
-	
+
 	// If manual control of entities is required, this is the method to do so.
 	auto & testGOpos = testRegistry.get<Position>(testGO.getEntityID());
 
