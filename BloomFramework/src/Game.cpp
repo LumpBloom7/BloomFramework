@@ -4,9 +4,7 @@
 namespace bloom {
 	int Game::m_runningInstancesQnt = 0;
 
-	Game::Game(int width, int height, int windowFlags, int rendererFlags) :
-		m_screenWidth(width),
-		m_screenHeight(height),
+	Game::Game(int windowFlags, int rendererFlags) :
 		m_windowFlags(windowFlags),
 		m_rendererFlags(rendererFlags),
 		m_isRunning(false)
@@ -21,9 +19,7 @@ namespace bloom {
 		m_runningInstancesQnt++;
 	}
 
-	Game::Game(std::nothrow_t, int width, int height, int windowFlags, int rendererFlags) :
-		m_screenWidth(width),
-		m_screenHeight(height),
+	Game::Game(std::nothrow_t, int windowFlags, int rendererFlags) :
 		m_windowFlags(windowFlags),
 		m_rendererFlags(rendererFlags),
 		m_isRunning(false)
@@ -82,11 +78,11 @@ namespace bloom {
 		SDL_Quit();
 	}
 
-	void Game::create(std::string const& title, int xpos, int ypos) {
-		m_window = SDL_CreateWindow(title.c_str(), xpos, ypos, m_screenWidth, m_screenHeight, m_windowFlags);
+	void Game::create(std::string const& title, int xpos, int ypos, int width, int height) {
+		m_window = SDL_CreateWindow(title.c_str(), xpos, ypos, width, height, m_windowFlags);
 		if (m_window == nullptr)
 			throw Exception{ "Game::initialize", SDL_GetError() };
-		std::clog << "Window created with width of " << m_screenWidth << " and height of " << m_screenHeight << "." << std::endl;
+		std::clog << "Window created with width of " << width << " and height of " << height << "." << std::endl;
 
 		m_renderer = SDL_CreateRenderer(m_window, -1, m_rendererFlags);
 		if (m_renderer == nullptr)
@@ -140,7 +136,7 @@ namespace bloom {
 		SDL_ShowWindow(m_window);
 	}
 
-	void Game::setColor(const SDL_Color & color) {
+	void Game::setColor(const SDL_Color& color) {
 		m_color = color;
 		SDL_SetRenderDrawColor(m_renderer, m_color.r, m_color.g, m_color.b, m_color.a);
 	}
@@ -154,23 +150,42 @@ namespace bloom {
 		return m_color;
 	}
 
-	void Game::getColor(Uint8 & r, Uint8 & g, Uint8 & b, Uint8 & a) {
+	void Game::getColor(Uint8& r, Uint8& g, Uint8& b, Uint8& a) {
 		r = m_color.r; g = m_color.g; b = m_color.b; a = m_color.a;
 	}
 
-	int Game::getScreenHeight() {
-		return m_screenHeight;
+	void Game::lockWindowSize() {
+		SDL_SetWindowResizable(m_window, SDL_FALSE);
 	}
 
-	int Game::getScreenWidth() {
-		return m_screenWidth;
+	void Game::unlockWindowSize() {
+		SDL_SetWindowResizable(m_window, SDL_TRUE);
+	}
+
+	int Game::getWindowHeight() {
+		int h;
+		SDL_GetWindowSize(m_window, nullptr, &h);
+		return h;
+	}
+
+	int Game::getWindowWidth() {
+		int w;
+		SDL_GetWindowSize(m_window, &w, nullptr);
+		return w;
+	}
+
+	void Game::setWindowSize(int w, int h) {
+		SDL_SetWindowSize(m_window, w, h);
+	}
+
+	void Game::setLogicalRendererSize(int w, int h) {
+		SDL_RenderSetLogicalSize(m_renderer, w, h);
 	}
 
 	SDL_Event Game::getEvent() {
 		return m_event;
 	}
-	SDL_Renderer * Game::getRenderer()
-	{
+	SDL_Renderer* Game::getRenderer() {
 		return m_renderer;
 	}
 }

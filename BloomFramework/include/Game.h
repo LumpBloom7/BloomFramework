@@ -10,8 +10,8 @@ namespace bloom {
 		friend TextureStore::TextureStore(Game & object);
 
 	public:
-		Game(int width, int height, int windowFlags = NULL, int rendererFlags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-		Game(std::nothrow_t, int width, int height, int windowFlags = NULL, int rendererFlags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+		Game(int windowFlags = NULL, int rendererFlags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+		Game(std::nothrow_t, int windowFlags = NULL, int rendererFlags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 		~Game();
 
 		static void initialize(Uint32 initFlags = SDL_INIT_EVERYTHING,
@@ -19,7 +19,7 @@ namespace bloom {
 			int imageFlags = IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF | IMG_INIT_WEBP);
 
 
-		void create(const std::string & title, int xpos, int ypos);
+		void create(const std::string & title, int xpos, int ypos, int width, int height);
 		void update();
 		void clear();
 		void delay(int intervalMs);
@@ -36,8 +36,13 @@ namespace bloom {
 
 		SDL_Color getColor();
 		void getColor(Uint8 & r, Uint8 & g, Uint8 & b, Uint8 & a);
-		int getScreenWidth();
-		int getScreenHeight();
+
+		void lockWindowSize();
+		void unlockWindowSize();
+		int getWindowWidth();
+		int getWindowHeight();
+		void setWindowSize(int w, int h);
+		void setLogicalRendererSize(int w, int h);
 		SDL_Event getEvent();
 
 		SDL_Renderer * getRenderer();
@@ -48,7 +53,6 @@ namespace bloom {
 	protected:
 		SDL_Renderer *	m_renderer = nullptr;
 		SDL_Window *	m_window = nullptr;
-		int				m_screenWidth, m_screenHeight;
 		const int		m_windowFlags, m_rendererFlags;
 		SDL_Color		m_color;
 		SDL_Event		m_event;
