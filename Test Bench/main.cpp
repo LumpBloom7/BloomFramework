@@ -168,7 +168,7 @@ void test_drawer(const std::filesystem::path& dataDir) {
 		game->clear();
 		animChangerTest.update();
 		animSysTest.update(dt);
-		randomizer.update(WINDOW_WIDTH - 128, WINDOW_HEIGHT - 128);
+		randomizer.update(game->getRendererWidth() - 128, game->getRendererHeight() - 128);
 		renderSysTest.update(); // Test again.
 		auto fps = 1000.0 / dt;
 		deltaTimeText.erase(5);
