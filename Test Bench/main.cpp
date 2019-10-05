@@ -155,10 +155,10 @@ void test_drawer(const std::filesystem::path& dataDir) {
 	while (game->isRunning()) {
 		testGOpos.x += testX;
 		testGOpos.y += testY;
-		if (testGOpos.x >= WINDOW_WIDTH) {
+		if (testGOpos.x >= game->getRendererWidth()) {
 			testGOpos.x = -testGOsize.w; testX = rstep(10); testY = rstep(10);
 		}
-		if (testGOpos.y >= WINDOW_HEIGHT) {
+		if (testGOpos.y >= game->getRendererHeight()) {
 			testGOpos.y = -testGOsize.h; testX = rstep(10); testY = rstep(10);
 		}
 		// Demo ends here.
