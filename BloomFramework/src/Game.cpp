@@ -160,12 +160,8 @@ namespace bloom {
 		r = m_color.r; g = m_color.g; b = m_color.b; a = m_color.a;
 	}
 
-	void Game::lockWindowSize() {
-		SDL_SetWindowResizable(m_window, SDL_FALSE);
-	}
-
-	void Game::unlockWindowSize() {
-		SDL_SetWindowResizable(m_window, SDL_TRUE);
+	void Game::setWindowResizable(bool state) {
+		SDL_SetWindowResizable(m_window, (state ? SDL_TRUE : SDL_FALSE));
 	}
 
 	int Game::getWindowHeight() {
