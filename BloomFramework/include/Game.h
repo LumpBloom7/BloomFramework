@@ -43,6 +43,9 @@ namespace bloom {
 		int getWindowHeight();
 		void setWindowSize(int w, int h);
 		void setLogicalRendererSize(int w, int h, bool lock = false);
+
+		int getRendererWidth();
+		int getRendererHeight();
 		void useIntegerScale(bool enable = true);
 
 		SDL_Event getEvent();

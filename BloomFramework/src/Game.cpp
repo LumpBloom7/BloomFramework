@@ -189,6 +189,18 @@ namespace bloom {
 		m_resolutionLock = lock;
 	}
 
+	int Game::getRendererWidth(){
+		int w;
+		SDL_RenderGetLogicalSize(m_renderer, &w, nullptr);
+		return w;
+	}
+
+	int Game::getRendererHeight() {
+		int h;
+		SDL_RenderGetLogicalSize(m_renderer, nullptr, &h);
+		return h;
+	}
+
 	void Game::useIntegerScale(bool enable) {
 		SDL_RenderSetIntegerScale(m_renderer, (enable ? SDL_TRUE : SDL_FALSE));
 	}
