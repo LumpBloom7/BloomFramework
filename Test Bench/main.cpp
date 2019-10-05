@@ -53,6 +53,7 @@ void test_player(const std::filesystem::path& dataDir) {
 	while (!music.queue.tryActivate())
 		std::this_thread::sleep_for(1s);
 	music.queue.play();
+	music.queue.setVolume(0);
 }
 
 void test_drawer(const std::filesystem::path& dataDir) {
@@ -75,6 +76,7 @@ void test_drawer(const std::filesystem::path& dataDir) {
 	game->clear();
 	game->render();
 	game->setLogicalRendererSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+	//SDL_RenderSetIntegerScale(game->getRenderer(), SDL_TRUE);
 
 	fs::path assetsPath = dataDir / L"Assets";
 	fs::path fontsPath = dataDir / L"Fonts";

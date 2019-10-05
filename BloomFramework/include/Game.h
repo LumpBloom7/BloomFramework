@@ -7,7 +7,7 @@
 namespace bloom {
 	class BLOOMFRAMEWORK_API Game {
 		using TextureStore = bloom::graphics::TextureStore;
-		friend TextureStore::TextureStore(Game & object);
+		friend TextureStore::TextureStore(Game& object);
 
 	public:
 		Game(int windowFlags = NULL, int rendererFlags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
@@ -19,7 +19,7 @@ namespace bloom {
 			int imageFlags = IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF | IMG_INIT_WEBP);
 
 
-		void create(const std::string & title, int xpos, int ypos, int width, int height);
+		void create(const std::string& title, int xpos, int ypos, int width, int height);
 		void update();
 		void clear();
 		void delay(int intervalMs);
@@ -31,32 +31,35 @@ namespace bloom {
 		void hideWindow();
 		void showWindow();
 
-		void setColor(const SDL_Color & color);
+		void setColor(const SDL_Color& color);
 		void setColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 
 		SDL_Color getColor();
-		void getColor(Uint8 & r, Uint8 & g, Uint8 & b, Uint8 & a);
+		void getColor(Uint8& r, Uint8& g, Uint8& b, Uint8& a);
 
 		void lockWindowSize();
 		void unlockWindowSize();
 		int getWindowWidth();
 		int getWindowHeight();
 		void setWindowSize(int w, int h);
-		void setLogicalRendererSize(int w, int h);
+		void setLogicalRendererSize(int w, int h, bool lock = false);
+		void useIntegerScale(bool enable = true);
+
 		SDL_Event getEvent();
 
-		SDL_Renderer * getRenderer();
+		SDL_Renderer* getRenderer();
 
 		TextureStore	textures = TextureStore(m_renderer);
 		Timer			timer;
 
 	protected:
-		SDL_Renderer *	m_renderer = nullptr;
-		SDL_Window *	m_window = nullptr;
-		const int		m_windowFlags, m_rendererFlags;
-		SDL_Color		m_color;
-		SDL_Event		m_event;
-		bool			m_isRunning;
+		SDL_Renderer* m_renderer = nullptr;
+		SDL_Window* m_window = nullptr;
+		const int	m_windowFlags, m_rendererFlags;
+		SDL_Color	m_color;
+		SDL_Event	m_event;
+		bool		m_isRunning;
+		bool		m_resolutionLock = false;
 
 	private:
 		static void exit();

@@ -89,6 +89,8 @@ namespace bloom {
 			throw Exception{ "Game::initialize", SDL_GetError() };
 		std::clog << "Renderer initialized." << std::endl;
 
+		setLogicalRendererSize(width, height);
+
 		m_isRunning = true;
 		std::clog << "Game is now running!" << std::endl;
 	}
@@ -98,6 +100,10 @@ namespace bloom {
 
 		if (m_event.type == SDL_QUIT)
 			m_isRunning = false;
+		else if (m_event.type == SDL_WINDOWEVENT) {
+			if (m_event.window.event == SDL_WINDOWEVENT_RESIZED && !m_resolutionLock)
+				setLogicalRendererSize(getWindowWidth(), getWindowHeight());
+		}
 	}
 
 	void Game::update() {
@@ -178,8 +184,13 @@ namespace bloom {
 		SDL_SetWindowSize(m_window, w, h);
 	}
 
-	void Game::setLogicalRendererSize(int w, int h) {
+	void Game::setLogicalRendererSize(int w, int h, bool lock) {
 		SDL_RenderSetLogicalSize(m_renderer, w, h);
+		m_resolutionLock = lock;
+	}
+
+	void Game::useIntegerScale(bool enable) {
+		SDL_RenderSetIntegerScale(m_renderer, (enable ? SDL_TRUE : SDL_FALSE));
 	}
 
 	SDL_Event Game::getEvent() {
